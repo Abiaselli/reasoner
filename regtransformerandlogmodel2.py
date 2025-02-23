@@ -2486,7 +2486,14 @@ class ReasoningModelGUI:
                         # Forward pass
                         try:
 
+
+                            architecture = self.architecture.get()
+                            if architecture == "Reasoning Model LNS":
+
                                 output = self.model(batch_input_ids, decoder_input)
+
+                            else:
+                                output = self.model(batch_input_ids, target_labels)
 
 
 
