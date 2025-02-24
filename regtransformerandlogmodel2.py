@@ -2164,22 +2164,22 @@ class ReasoningModelGUI:
         logging.debug(f"Generating Training Pairs - ToT: {tot_target}")
 
         # Ensure inputs are valid strings before tokenization
-        query_ids = self.tokenizer.encode(str(query) if query else "", truncation=True, max_length=seq_len)
-        target_ids = self.tokenizer.encode(str(target) if target else "", truncation=True, max_length=seq_len)
-        tot_target_ids = self.tokenizer.encode(str(tot_target) if tot_target else "", truncation=True, max_length=seq_len)
+        query_ids = self.tokenizer.encode(str(query) if query else "", truncation=True, max_length=(seq_len-2))
+        target_ids = self.tokenizer.encode(str(target) if target else "", truncation=True, max_length=(seq_len-2))
+        tot_target_ids = self.tokenizer.encode(str(tot_target) if tot_target else "", truncation=True, max_length=(seq_len-2))
 
         if training_mode == "imitation":
-            input_ids = query_ids + [self.tokenizer.eos_token_id] 
-            labels = query_ids + [self.tokenizer.eos_token_id] 
+            input_ids = [self.tokenizer.bos_token_id] + query_ids + [self.tokenizer.eos_token_id] 
+            labels = [self.tokenizer.bos_token_id] + query_ids + [self.tokenizer.eos_token_id] 
         elif training_mode == "completion":
             partial_length = len(query_ids) // 2
             partial_input = query_ids[:partial_length]
-            input_ids = partial_input + [self.tokenizer.eos_token_id]
-            labels = query_ids + [self.tokenizer.eos_token_id]  
+            input_ids = [self.tokenizer.bos_token_id] + partial_input + [self.tokenizer.eos_token_id]
+            labels = [self.tokenizer.bos_token_id] + query_ids + [self.tokenizer.eos_token_id]  
         else:  # response mode
-            input_ids = query_ids + [self.tokenizer.eos_token_id]
-            labels = target_ids + [self.tokenizer.eos_token_id]
-            labels_tot = tot_target_ids + [self.tokenizer.eos_token_id]
+            input_ids = [self.tokenizer.bos_token_id] + query_ids + [self.tokenizer.eos_token_id]
+            labels = [self.tokenizer.bos_token_id] + target_ids + [self.tokenizer.eos_token_id]
+            labels_tot = [self.tokenizer.bos_token_id] + tot_target_ids + [self.tokenizer.eos_token_id]
 
         return input_ids, labels, labels_tot
 
