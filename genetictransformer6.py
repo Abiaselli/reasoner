@@ -1284,7 +1284,7 @@ class Transformer_Model(nn.Module):
         if self.training:
             tgt_mask = nn.Transformer.generate_square_subsequent_mask(self.seq_length).to(src_emb.device)
         else:
-            current_length = tgt_emb.size(1)
+            current_length = src_emb.size(1)
             tgt_mask = nn.Transformer.generate_square_subsequent_mask(current_length).to(src_emb.device)
 
         # Transformer Block with Checkpointing
