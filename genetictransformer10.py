@@ -53,7 +53,6 @@ else:
 
 seq_len = 512
 pad_token_id = 0
-chunksize = 32
 
 
 def zeropower_via_newtonschulz5(G: torch.Tensor, steps: int) -> torch.Tensor:
@@ -2360,13 +2359,7 @@ class ReasoningModelGUI:
                         pad_token_id = self.tokenizer.pad_token_id if self.tokenizer.pad_token_id is not None else 0
                         generated_text = input_ids
                         generated = []
-                        # Ensure input length is multiple of chunk size
-                        original_length = input_ids.shape[1]
-                        pad_length = (chunksize - (original_length % chunksize)) % chunksize  # Only pad if needed
-                        if pad_length > 0:
-                            pad_tokens = torch.full((1, pad_length), pad_token_id, dtype=torch.long).to(device)
-                            input_ids = torch.cat([input_ids, pad_tokens], dim=1)
-                        logging.debug(f"Padded input_ids Shape: {input_ids.shape}")
+
 
                         # Choose a start token for the dummy target.
                         # Here we use tokenizer.eos_token_id if available; otherwise, fallback to tokenizer.pad_token_id.
