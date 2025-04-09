@@ -3338,7 +3338,8 @@ class ReasoningModelGUI:
                                     logging.debug("Optimizer gradients zeroed")
 
                                     self.accumulated_loss = 0  # Reset loss tracking
-                    del batch_input_ids, decoder_input, target_labels, output
+                            del output
+                    del batch_input_ids, decoder_input, target_labels
                     gc.collect()
                     torch.cuda.empty_cache()
                     step_count += 1
