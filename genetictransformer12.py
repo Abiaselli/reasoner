@@ -1540,7 +1540,7 @@ class GeneticAlgorithm:
         return best_model
 
     def evolve(self, loss_fn, inputs, target_labels, decoder_input, architecture):
-        self.model = self.select_best(self.model, loss_fn, inputs, target_labels, decoder_input, architecture)
+        self.model = self.select_best(loss_fn, inputs, target_labels, decoder_input, architecture)
         self.population = [copy.deepcopy(self.model) for _ in range(self.population_size)]
         for model in self.population:
             for param in model.parameters():
